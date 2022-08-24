@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
 let smtp_login = process.env.SMTP_LOGIN ;
-let smtp_password = process.env.SMTP_Password ;
+let smtp_password = process.env.SMTP_PASSWORD ;
 
 let transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -25,9 +25,9 @@ app.get('/', (req, res) => {
 
 
 
-app.post('/sendMessage', async (req, res) => {
+app.post('/sendMessage', async function (req, res) {
 
-    let {message, contacts, name} = req.body
+    let {name, email, message} = req.body
 
     let info = await transporter.sendMail({
         from: 'HR want me 👻', // sender address
@@ -38,17 +38,17 @@ app.post('/sendMessage', async (req, res) => {
 name:${name}
 </div>
 <div>
-contacts:${contacts}
+email:${email}
 </div>
 <div>
-message:${message}
+${message}
 </div>`,
     });
 
     res.send('ok')
 })
 
-let port = process.env.PORT || 3010;
+let port = process.env.PORT;
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
